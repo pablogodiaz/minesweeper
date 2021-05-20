@@ -15,6 +15,7 @@ public class MineSweeperGen {
             }
         }
         createMines();
+        createNumbers();
     }
 
     private void createMines() {
@@ -31,10 +32,54 @@ public class MineSweeperGen {
         for(int i = 0; i < SWEEPER_SIZE; i++) {
             for(int j = 0; j < SWEEPER_SIZE; j++) {
                 if(mineSweeper[i][j] == ' ') {
-                    
+                    mineSweeper[i][j] = ((nearbyMines(mineSweeper[i][j], i, j) == '0') ? ' ' : nearbyMines(mineSweeper[i][j], i ,j));
                 }
             }
         }
+    }
+
+    private char nearbyMines(char c, int i, int j) {
+        int res = 0;
+        if(i != 0) {
+            if(mineSweeper[i-1][j] == '*') {
+                ++res;
+            }
+            if(j != 0) {
+                if(mineSweeper[i-1][j-1] == '*') {
+                    ++res;
+                }
+            }
+            if(j != SWEEPER_SIZE - 1) {
+                if(mineSweeper[i-1][j+1] == '*') {
+                    ++res;
+                }
+            }
+        }
+        if (j != 0) {
+            if(mineSweeper[i][j-1] == '*') {
+                ++res;
+            }
+            if(i != SWEEPER_SIZE - 1) {
+                if(mineSweeper[i+1][j-1] == '*') {
+                    ++res;
+                }
+            }
+        }
+        if (i != SWEEPER_SIZE - 1) {
+            if(mineSweeper[i+1][j] == '*') {
+                ++res;
+            }
+            if(j != SWEEPER_SIZE - 1) {
+                if(mineSweeper[i+1][j+1] == '*') {
+                    ++res;
+                }
+            }
+        } else if (j != SWEEPER_SIZE - 1) {
+            if(mineSweeper[i][j+1] == '*') {
+                ++res;
+            }
+        }
+        return (char) (res + '0');
     }
 
     public String toString() {
