@@ -8,15 +8,19 @@ public class MineSweeperGen {
     private static final int SWEEPER_SIZE = 20;
     private static final Random rand = new Random();
     private char[][] mineSweeper;
+    private char[][] displaySweeper;
     private int numSpaces = 0;
 
     public MineSweeperGen() {
         mineSweeper = new char[SWEEPER_SIZE][SWEEPER_SIZE];
+        displaySweeper = new char[SWEEPER_SIZE][SWEEPER_SIZE];
         for(int i = 0; i < SWEEPER_SIZE; i++) {
             for(int j = 0; j < SWEEPER_SIZE; j++) {
                 mineSweeper[i][j] = ' ';
+                displaySweeper[i][j] = ' ';
             }
         }
+
         createMines();
         createNumbers();
     }
@@ -24,7 +28,7 @@ public class MineSweeperGen {
     private void createMines() {
         for(int i = 0; i < SWEEPER_SIZE; i++) {
             for(int j = 0; j < SWEEPER_SIZE; j++) {
-                if(rand.nextInt(10) < 2) {
+                if(rand.nextInt(100) < 14) {
                     mineSweeper[i][j] = '*';
                 } else {
                     ++numSpaces;
@@ -100,6 +104,27 @@ public class MineSweeperGen {
 
     public int getNumSpaces() {
         return numSpaces;
+    }
+
+    public String display() {
+        StringBuilder res = new StringBuilder("+ ");
+
+        res.append("- ".repeat(SWEEPER_SIZE));
+        res.append("+ \n");
+
+        for(int i = 0; i < SWEEPER_SIZE; i++) {
+            res.append("| ");
+            for(int j = 0; j < SWEEPER_SIZE; j++) {
+                res.append(displaySweeper[i][j]);
+                res.append(" ");
+            }
+            res.append("| \n");
+        }
+        res.append("+ ");
+        res.append("- ".repeat(SWEEPER_SIZE));
+        res.append("+ \n");
+
+        return res.toString();
     }
 
     public String toString() {
