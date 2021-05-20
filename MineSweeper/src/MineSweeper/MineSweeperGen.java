@@ -3,9 +3,10 @@ package MineSweeper;
 import java.util.Random;
 
 public class MineSweeperGen {
-    private char[][] mineSweeper;
     private static final int SWEEPER_SIZE = 20;
     private static final Random rand = new Random();
+    private char[][] mineSweeper;
+    private int numSpaces = 0;
 
     public MineSweeperGen() {
         mineSweeper = new char[SWEEPER_SIZE][SWEEPER_SIZE];
@@ -23,6 +24,8 @@ public class MineSweeperGen {
             for(int j = 0; j < SWEEPER_SIZE; j++) {
                 if(rand.nextInt(10) < 2) {
                     mineSweeper[i][j] = '*';
+                } else {
+                    ++numSpaces;
                 }
             }
         }
@@ -74,12 +77,21 @@ public class MineSweeperGen {
                     ++res;
                 }
             }
-        } else if (j != SWEEPER_SIZE - 1) {
+        }
+        if (j != SWEEPER_SIZE - 1) {
             if(mineSweeper[i][j+1] == '*') {
                 ++res;
             }
         }
         return (char) (res + '0');
+    }
+
+    public void decreaseNumSpaces() {
+        --numSpaces;
+    }
+
+    public int getNumSpaces() {
+        return numSpaces;
     }
 
     public String toString() {
