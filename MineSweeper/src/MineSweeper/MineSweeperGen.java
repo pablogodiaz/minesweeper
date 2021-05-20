@@ -2,6 +2,8 @@ package MineSweeper;
 
 import java.util.Random;
 
+import static MineSweeper.Selection.F;
+
 public class MineSweeperGen {
     private static final int SWEEPER_SIZE = 20;
     private static final Random rand = new Random();
@@ -84,6 +86,12 @@ public class MineSweeperGen {
             }
         }
         return (char) (res + '0');
+    }
+
+    public void nextAction(Selection s, int i, int j) {
+        if(s = F & [i][j] != ' ') {
+
+        }
     }
 
     public void decreaseNumSpaces() {
