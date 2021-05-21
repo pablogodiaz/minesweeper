@@ -3,6 +3,7 @@ package MineSweeper;
 import java.util.Random;
 
 import static MineSweeper.Selection.F;
+import static MineSweeper.Selection.R;
 
 public class MineSweeperGen {
     private static final int SWEEPER_SIZE = 20;
@@ -41,13 +42,13 @@ public class MineSweeperGen {
         for(int i = 0; i < SWEEPER_SIZE; i++) {
             for(int j = 0; j < SWEEPER_SIZE; j++) {
                 if(mineSweeper[i][j] == ' ') {
-                    mineSweeper[i][j] = ((nearbyMines(mineSweeper[i][j], i, j) == '0') ? ' ' : nearbyMines(mineSweeper[i][j], i ,j));
+                    mineSweeper[i][j] = ((nearbyMines(i, j) == '0') ? ' ' : nearbyMines(i ,j));
                 }
             }
         }
     }
 
-    private char nearbyMines(char c, int i, int j) {
+    private char nearbyMines(int i, int j) {
         int res = 0;
         if(i != 0) {
             if(mineSweeper[i-1][j] == '*') {
@@ -92,9 +93,81 @@ public class MineSweeperGen {
         return (char) (res + '0');
     }
 
-    public void nextAction(Selection s, int i, int j) {
-        if(s = F & [i][j] != ' ') {
 
+    public void nextAction(Selection s, int i, int j) {
+        if(s == F) {
+            if(displaySweeper[i][j] == ' ') {
+                displaySweeper[i][j] = 'F';
+            } else if(displaySweeper[i][j] == 'F') {
+                displaySweeper[i][j] = ' ';
+            } else {
+                System.out.println("ERROR -> Usage for F flag: in spaces (' ') or in Fs ('F').");
+            }
+        } else if(s == R) {
+            if(displaySweeper[i][j] == ' ') {
+                if(mineSweeper[i][j] == ' ') {
+                    displaySweeper[i][j] = '/';
+                    decreaseNumSpaces();
+                    revealAdjacent(i, j);
+
+                } else if(isANumber(i, j)) {
+                    displaySweeper[i][j] = mineSweeper[i][j];
+                    decreaseNumSpaces();
+                } else if(mineSweeper[i][j] == '*') {
+                    System.out.println("GAME OVER! Mine exploded in position i: " + i + " j: " + j);
+                    throw new RuntimeException("Game ended, lost.");
+                }
+            }
+        }
+
+    }
+
+    private boolean isANumber(int i, int j) {
+        return mineSweeper[i][j] == '1' | mineSweeper[i][j] == '2' | mineSweeper[i][j] == '3' |
+                mineSweeper[i][j] == '4' | mineSweeper[i][j] == '5' | mineSweeper[i][j] == '6' |
+                mineSweeper[i][j] == '7' | mineSweeper[i][j] == '8';
+    }
+
+    private void revealAdjacent(int i, int j) {
+        if(i != 0) {
+            if(mineSweeper[i-1][j] == ' ' | isANumber(i - 1, j)) {
+                nextAction(R, i - 1, j);
+            }
+            if(j != 0) {
+                if(mineSweeper[i-1][j-1] == ' '  | isANumber(i - 1, j - 1)) {
+                    nextAction(R, i - 1, j - 1);
+                }
+            }
+            if(j != SWEEPER_SIZE - 1) {
+                if(mineSweeper[i-1][j+1] == ' '  | isANumber(i - 1, j + 1)) {
+                    nextAction(R, i - 1, j + 1);
+                }
+            }
+        }
+        if (j != 0) {
+            if(mineSweeper[i][j-1] == ' '  | isANumber(i, j - 1)) {
+                nextAction(R, i, j - 1);
+            }
+            if(i != SWEEPER_SIZE - 1) {
+                if(mineSweeper[i+1][j-1] == ' '  | isANumber(i + 1, j - 1)) {
+                    nextAction(R, i + 1, j - 1);
+                }
+            }
+        }
+        if (i != SWEEPER_SIZE - 1) {
+            if(mineSweeper[i+1][j] == ' '  | isANumber(i + 1, j)) {
+                nextAction(R, i + 1, j);
+            }
+            if(j != SWEEPER_SIZE - 1) {
+                if(mineSweeper[i+1][j+1] == ' '  | isANumber(i + 1, j + 1)) {
+                    nextAction(R, i + 1, j + 1);
+                }
+            }
+        }
+        if (j != SWEEPER_SIZE - 1) {
+            if(mineSweeper[i][j+1] == ' '  | isANumber(i, j + 1)) {
+                nextAction(R, i, j + 1);
+            }
         }
     }
 
