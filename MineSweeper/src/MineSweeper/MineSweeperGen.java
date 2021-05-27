@@ -6,7 +6,7 @@ import static MineSweeper.Selection.F;
 import static MineSweeper.Selection.R;
 
 public class MineSweeperGen {
-    private static final int SWEEPER_SIZE = 20;
+    public static final int SWEEPER_SIZE = 20;
     private static final Random rand = new Random();
     private char[][] mineSweeper;
     private char[][] displaySweeper;
@@ -94,7 +94,7 @@ public class MineSweeperGen {
     }
 
 
-    public void nextAction(Selection s, int i, int j) {
+    public boolean nextAction(Selection s, int i, int j) {
         if(s == F) {
             if(displaySweeper[i][j] == ' ') {
                 displaySweeper[i][j] = 'F';
@@ -115,11 +115,11 @@ public class MineSweeperGen {
                     decreaseNumSpaces();
                 } else if(mineSweeper[i][j] == '*') {
                     System.out.println("GAME OVER! Mine exploded in position i: " + i + " j: " + j);
-                    throw new RuntimeException("Game ended, lost.");
+                    return false;
                 }
             }
         }
-
+        return true;
     }
 
     private boolean isANumber(int i, int j) {
