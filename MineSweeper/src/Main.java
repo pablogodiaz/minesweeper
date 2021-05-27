@@ -42,7 +42,7 @@ public class Main {
             isAlive = gen.nextAction(sel, i, j);
         }
         if(gen.getNumSpaces() <= 0) {
-            System.out.println("Congratulations! You win!");
+            System.out.println("Congratulations! You win!\n");
         }
         System.out.println("Your game finished like this:");
         System.out.println(gen.display());

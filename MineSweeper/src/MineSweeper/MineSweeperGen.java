@@ -6,7 +6,7 @@ import static MineSweeper.Selection.F;
 import static MineSweeper.Selection.R;
 
 public class MineSweeperGen {
-    public static final int SWEEPER_SIZE = 20;
+    public static final int SWEEPER_SIZE = 5;
     private static final Random rand = new Random();
     private char[][] mineSweeper;
     private char[][] displaySweeper;
@@ -109,7 +109,6 @@ public class MineSweeperGen {
                     displaySweeper[i][j] = '/';
                     decreaseNumSpaces();
                     revealAdjacent(i, j);
-
                 } else if(isANumber(i, j)) {
                     displaySweeper[i][j] = mineSweeper[i][j];
                     decreaseNumSpaces();
@@ -171,7 +170,7 @@ public class MineSweeperGen {
         }
     }
 
-    public void decreaseNumSpaces() {
+    private void decreaseNumSpaces() {
         --numSpaces;
     }
 
